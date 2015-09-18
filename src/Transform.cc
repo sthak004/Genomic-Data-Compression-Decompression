@@ -60,17 +60,6 @@ std::string Transform::getFileExt(char* fileName/*const std::string& s*/)
 //************************************************************
 int Transform::Compress(char* fileName/*, uint8_t letter, short& lines, int32_t& t_letters*/)
 {
-	//
-	// Author: Rachid Ounit, Regents of University of California, Riverside
-	// Class: CS 100, Summer Session II, 2015.
-	//
-
-	// The following C++ instructions does not compile and are just 
-	// extracted code. Please see these lines as guidelines about how 
-	// to create and close a mapping from a file named "filename" (const char *).
-	// This mapping allows you to read only a file and have access to
-	// its content through a pointer, "pmap".
-
 	// Create a variable, fileSize, to store the size of the file
 	uint32_t fileSize = 0;
 

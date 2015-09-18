@@ -1,7 +1,3 @@
-//************************************************************
-// Transform Implementation
-//************************************************************
-
 #include "./Transform.hh"
 #include <iostream>
 #include <string>
