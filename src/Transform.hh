@@ -23,14 +23,12 @@ class Transform
 	//Method: Compress
 	//Output: Integer,
 	//Input: Character Pointer,
-	int Compress(char* fileName/*uint8_t letter, short& lines, int32_t& t_letters*/); 
+	int Compress(char* fileName); 
 
 	//Method: getFileExt
 	//Output: Text,
 	//Input:  Text,
-	std::string getFileExt(char* fileName/*const std::string& s*/);
-
-	private:
+	std::string getFileExt(char* fileName);
 };
 
 #endif

@@ -35,7 +35,7 @@ Transform::~Transform()
 // Implementation Notes:
 //
 //************************************************************
-std::string Transform::getFileExt(char* fileName/*const std::string& s*/)
+std::string Transform::getFileExt(char* fileName)
 {
 	std::string fileName_S = std::string(fileName);
 	size_t i = fileName_S.rfind('.', fileName_S.length());
@@ -58,7 +58,7 @@ std::string Transform::getFileExt(char* fileName/*const std::string& s*/)
 //			 't'/'T' = 11
 //
 //************************************************************
-int Transform::Compress(char* fileName/*, uint8_t letter, short& lines, int32_t& t_letters*/)
+int Transform::Compress(char* fileName)
 {
 	// Create a variable, fileSize, to store the size of the file
 	uint32_t fileSize = 0;
@@ -89,11 +89,6 @@ int Transform::Compress(char* fileName/*, uint8_t letter, short& lines, int32_t&
 		std::cerr << "Failed to mmapping the file." << std::endl;
 		return false;
 	}
-
-	// . . .
-	// this is where I think compressing/decompressing should occur 
-	// . . .
-
 
 	//if the filename has the extension .fna then, compress the file
 	if(getFileExt(fileName) == "fna")
@@ -154,7 +149,6 @@ int Transform::Compress(char* fileName/*, uint8_t letter, short& lines, int32_t&
 				numLines++;
 			}
 
-			//if there are other letters, do we print, "a corrupt file"?
 		}
 
 
@@ -299,7 +293,6 @@ int Transform::Compress(char* fileName/*, uint8_t letter, short& lines, int32_t&
 						{
 							magicbox = (magicbox | 0x00) << 2;
 						}
-						//magicbox = (magicbox | 0x00) << 2;
 
 						std::bitset<8> magicbox1(magicbox);
 						std::cout << "MAGICBOX CONTAINS: " << magicbox1 << std::endl;
@@ -314,7 +307,6 @@ int Transform::Compress(char* fileName/*, uint8_t letter, short& lines, int32_t&
 						{
 							magicbox = (magicbox | 0x01) << 2;
 						}
-						//magicbox = (magicbox | 0x01) << 2;
 
 						std::bitset<8> magicbox1(magicbox);
 						std::cout << "MAGICBOX CONTAINS: " << magicbox1 << std::endl;
@@ -329,7 +321,6 @@ int Transform::Compress(char* fileName/*, uint8_t letter, short& lines, int32_t&
 						{
 							magicbox = (magicbox | 0x02) << 2;
 						}
-						//magicbox = (magicbox | 0x02) << 2;
 
 						std::bitset<8> magicbox1(magicbox);
 						std::cout << "MAGICBOX CONTAINS: " << magicbox1 << std::endl;
@@ -344,7 +335,6 @@ int Transform::Compress(char* fileName/*, uint8_t letter, short& lines, int32_t&
 						{
 							magicbox = (magicbox | 0x03) << 2;
 						}
-						//magicbox = (magicbox | 0x03) << 2;
 
 						std::bitset<8> magicbox1(magicbox);
 						std::cout << "MAGICBOX CONTAINS: " << magicbox1 << std::endl;
@@ -385,24 +375,13 @@ int Transform::Compress(char* fileName/*, uint8_t letter, short& lines, int32_t&
 				continue;
 			}
 
-			//if there are other letters, do we print, "a corrupt file"?
 		}
 
 		//close the file when done
 		fclose(fp);
-
-		//upon sucessfully encoding, delete old .fna file
-		// delete code here...
-
-		/*int status;
-		  status = remove(fileName);
-
-		  if(status != 0)
-		  {
-		  printf("Unable to delete file, %s", fileName);
-		  perror("Error");
-		  }*/
 	}
+
+
 	//else if the filename has the extension .cds then, decompress the file
 	else if(getFileExt(fileName) == "cds")
 	{
@@ -449,9 +428,9 @@ int Transform::Compress(char* fileName/*, uint8_t letter, short& lines, int32_t&
 					std::cout << "TEMP: " << size_t(temp) << std::endl;
 					std::bitset<8> temper(temp);
 					if(temp == 0x00 && (total_char_CP > 3) ) letters.insert(0, "A");
-					else if(temp == 0x01 /*&& (total_char_CP > 0)*/ ) letters.insert(0, "C");
-					else if(temp == 0x02 /*&& (total_char_CP > 0)*/ ) letters.insert(0, "G");
-					else if(temp == 0x03 /*&& (total_char_CP > 0)*/ ) letters.insert(0, "T");
+					else if(temp == 0x01) letters.insert(0, "C");
+					else if(temp == 0x02) letters.insert(0, "G");
+					else if(temp == 0x03) letters.insert(0, "T");
 					std::cout << "CURRENT LETTERS: " << letters << std::endl;
 					total_char_CP -= 1;
 				}
@@ -462,9 +441,9 @@ int Transform::Compress(char* fileName/*, uint8_t letter, short& lines, int32_t&
 					std::cout << "TEMP: " << size_t(temp) << std::endl;
 					std::bitset<8> temper(temp);
 					if(temp == 0x00 && (total_char_CP > 3) ) letters.insert(0, "A");
-					else if(temp == 0x01 /*&& (total_char_CP > 0)*/ ) letters.insert(0, "C");
-					else if(temp == 0x02 /*&& (total_char_CP > 0)*/ ) letters.insert(0, "G");
-					else if(temp == 0x03 /*&& (total_char_CP > 0)*/ ) letters.insert(0, "T");
+					else if(temp == 0x01) letters.insert(0, "C");
+					else if(temp == 0x02) letters.insert(0, "G");
+					else if(temp == 0x03) letters.insert(0, "T");
 					std::cout << "CURRENT LETTERS: " << letters << std::endl;
 					total_char_CP -= 1;
 				}
@@ -475,9 +454,9 @@ int Transform::Compress(char* fileName/*, uint8_t letter, short& lines, int32_t&
 					std::cout << "TEMP: " << size_t(temp) << std::endl;
 					std::bitset<8> temper(temp);
 					if(temp == 0x00 && (total_char_CP > 3) ) letters.insert(0, "A");
-					else if(temp == 0x01 /*&& (total_char_CP > 0)*/ ) letters.insert(0, "C");
-					else if(temp == 0x02 /*&& (total_char_CP > 0)*/ ) letters.insert(0, "G");
-					else if(temp == 0x03 /*&& (total_char_CP > 0)*/ ) letters.insert(0, "T");
+					else if(temp == 0x01) letters.insert(0, "C");
+					else if(temp == 0x02) letters.insert(0, "G");
+					else if(temp == 0x03) letters.insert(0, "T");
 					std::cout << "CURRENT LETTERS: " << letters << std::endl;
 					total_char_CP -= 1;
 				}
@@ -488,127 +467,22 @@ int Transform::Compress(char* fileName/*, uint8_t letter, short& lines, int32_t&
 					std::cout << "TEMP: " << size_t(temp) << std::endl;
 					std::bitset<8> temper(temp);
 					if(temp == 0x00 && (total_char_CP > 3) ) letters.insert(0, "A");
-					else if(temp == 0x01 /*&& (total_char_CP > 0)*/ ) letters.insert(0, "C");
-					else if(temp == 0x02 /*&& (total_char_CP > 0)*/ ) letters.insert(0, "G");
-					else if(temp == 0x03 /*&& (total_char_CP > 0)*/ ) letters.insert(0, "T");
+					else if(temp == 0x01) letters.insert(0, "C");
+					else if(temp == 0x02) letters.insert(0, "G");
+					else if(temp == 0x03) letters.insert(0, "T");
 					std::cout << "CURRENT LETTERS: " << letters << std::endl;
 					total_char_CP -= 1;
 				}
 			}
 		}
 
-
-
 		//close file
 		fclose(fr);
-
-
-		/*FILE* fp;
-		fp = fopen(old_fileName.c_str(), "r");
-		//get the offset numbers and IGNORE them
-		uint32_t garbage_value1 = 0;
-		short garbage_value2 = 0;
-		fread(&garbage_value1, sizeof(uint32_t), 1, fp);
-		fread(&garbage_value2, sizeof(short), 1, fp);
-		std::cout << "GARBAGE VALUE 1: " << garbage_value1 << std::endl;
-		std::cout << "GARBAGE VALUE 2: " << garbage_value2 << std::endl;
-
-		//scan the binary file to extract
-		for(int i = 0; i < fileSize; i++){
-			// binary: 0000 0000
-			//uint8_t buffer = 0;	
-
-			//if there are less than 4 letters, you DON'T need a '\n' char
-			if(totLetters > 0)
-			{
-				uint8_t buffer = 0;	
-				//grab however many letters;
-				fread(&buffer, sizeof(uint8_t), 1, fp);
-				std::cout << "LETTER SET: " << size_t(buffer) << std::endl;
-
-				//string of letters to append to file
-				std::string letters = "";
-
-				//scan the 8 bit set
-				//you right shift as many times as there are numbers left
-				//this ensure you are getting all the correct letters
-				//however they will be backwards, so you have to prepend each one
-				//char for getting each letters value
-				uint8_t temp = 0;
-
-				for(unsigned int i = 0; i < totLetters; i++)
-				{
-					//IF ever, i = 0, then mask with: 0x03
-					if(i == 0)
-					{
-						temp = (buffer & 0x03);
-						std::cout << "TEMP: " << size_t(temp) << std::endl;
-						std::bitset<8> temper(temp);
-						std::cout << "TEMP IN BINARY: " << std::endl;
-						if(temp == 0x00) letters.insert(0, "A");
-						else if(temp == 0x01) letters.insert(0, "C");
-						else if(temp == 0x02) letters.insert(0, "G");
-						else if(temp == 0x03) letters.insert(0, "T");
-						std::cout << "CURRENT LETTERS: " << letters << std::endl;
-					}
-					//IF ever, i = 1, then mask with: 0x0C
-					else if(i == 1)
-					{
-						temp = (buffer & 0x0C) >> 2;
-						std::cout << "TEMP: " << size_t(temp) << std::endl;
-						std::bitset<8> temper(temp);
-						std::cout << "TEMP IN BINARY: " << std::endl;
-						if(temp == 0x00) letters.insert(0, "A");
-						else if(temp == 0x01) letters.insert(0, "C");
-						else if(temp == 0x02) letters.insert(0, "G");
-						else if(temp == 0x03) letters.insert(0, "T");
-						std::cout << "CURRENT LETTERS: " << letters << std::endl;
-					}
-					//IF ever, i = 2, then mask with: 0x30
-					else if(i == 2)
-					{
-						temp = (buffer & 0x30) >> 4;
-						std::cout << "TEMP: " << size_t(temp) << std::endl;
-						std::bitset<8> temper(temp);
-						std::cout << "TEMP IN BINARY: " << std::endl;
-						if(temp == 0x00) letters.insert(0, "A");
-						else if(temp == 0x01) letters.insert(0, "C");
-						else if(temp == 0x02) letters.insert(0, "G");
-						else if(temp == 0x03) letters.insert(0, "T");
-						std::cout << "CURRENT LETTERS: " << letters << std::endl;
-					}
-					//IF ever, i = 3, then mask with: 0xC0
-					else if(i == 3)
-					{
-						temp = (buffer & 0xC0) >> 6;
-						std::cout << "TEMP: " << size_t(temp) << std::endl;
-						std::bitset<8> temper(temp);
-						std::cout << "TEMP IN BINARY: " << std::endl;
-						if(temp == 0x00) letters.insert(0, "A");
-						else if(temp == 0x01) letters.insert(0, "C");
-						else if(temp == 0x02) letters.insert(0, "G");
-						else if(temp == 0x03) letters.insert(0, "T");
-						std::cout << "CURRENT LETTERS: " << letters << std::endl;
-					}
-				}
-
-				//output string to file
-				std::cout << "LETTER SET: " << letters << std::endl;	
-
-				//close the file
-				fclose(fp);
-			}
-		}*/
-
-
-
-		//make sure to REMOVE THE .cds file
 	}
 	else
 	{
 		std::cout << "Please input either a .fna or .cds file" << std::endl;
 	}
-
 
 	// Update/Apply changes to be made to the file before closing
 	msync(pmap, fileSize, MS_SYNC);
